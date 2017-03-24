@@ -1,0 +1,37 @@
+<!--
+  Generated template for the Register page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="nav">
+    <!--<button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>-->
+    <ion-title>Register</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding class="vertical-align-content">
+  <ion-card>
+    <ion-list inset>
+      <ion-item>
+        <ion-label floating>Name</ion-label>
+        <ion-input type="text" color="inverse" #txtDisplayName></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Email</ion-label>
+        <ion-input type="email" color="inverse" #txtEmail></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Password</ion-label>
+        <ion-input type="password" color="inverse" #txtPassword></ion-input>
+      </ion-item>
+      <button ion-button full (click)="clickRegister(txtDisplayName.value, txtEmail.value, txtPassword.value)">Register</button>
+    </ion-list>
+  </ion-card>
+</ion-content>
