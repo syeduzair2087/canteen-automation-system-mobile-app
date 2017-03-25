@@ -16,33 +16,12 @@ import { OrderPage } from '../order/order';
 })
 export class FoodDetailsPage {
   selectedFoodItem: FoodItem;
-  binaryPrefs: Array<FoodPreference> = [];
-  singlePrefs: Array<FoodPreference> = [];
-  multiPrefs: Array<FoodPreference> = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams) { }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad FoodDetailsPage');
     this.selectedFoodItem = this.navParams.get('foodItem');
-
-    this.selectedFoodItem.food_prefs.forEach((pref: FoodPreference) => {
-      if (pref.pref_type === 'Single Value') {
-        this.singlePrefs.push(pref);
-      }
-      else if (pref.pref_type === 'Multi Value') {
-        this.multiPrefs.push(pref)
-      }
-      else if (pref.pref_type === 'Binary') {
-        this.binaryPrefs.push(pref);
-      }
-    })
-
-    setTimeout(() => {
-      console.log(this.binaryPrefs);
-      console.log(this.singlePrefs);
-      console.log(this.multiPrefs);
-    }, 2000)
   }
 
   clickAddToBucket() {

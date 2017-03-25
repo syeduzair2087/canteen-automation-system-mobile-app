@@ -15,8 +15,9 @@ import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
 
 //////////SERVICES//////////
-import { AccountService } from '../services/account-service'
-import { FoodService } from '../services/food-service'
+import { AccountService } from '../services/account-service';
+import { FoodService } from '../services/food-service';
+import { BucketService } from '../services/bucket-service';
 
 //////////MODULES//////////
 import { AngularFireModule, AuthMethods, AuthProviders } from 'angularfire2';
@@ -72,7 +73,8 @@ export const firebaseAuthConfig = {
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     AccountService,
-    FoodService
+    FoodService,
+    BucketService
     ]
 })
 export class AppModule { }
