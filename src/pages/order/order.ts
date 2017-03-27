@@ -17,6 +17,7 @@ import { BucketService } from '../../services/bucket-service';
 })
 export class OrderPage {
   selectedFoodItem: FoodItem;
+  selectedKey: string = '';
   itemQuantity: number = 1;
 
   binaryPrefs: Array<FoodPreference> = [];
@@ -33,6 +34,25 @@ export class OrderPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad OrderPage');
+
+    let selectedBucketItem: BucketItem = this.navParams.get('bucketItem');
+    if (selectedBucketItem) {
+      if (selectedBucketItem.binaryPrefs) {
+        this.binaryPrefSelect = selectedBucketItem.binaryPrefs;
+      }
+
+      if (selectedBucketItem.singlePrefs) {
+        this.singlePrefSelect = selectedBucketItem.singlePrefs;
+      }
+
+      if (selectedBucketItem.multiPrefs) {
+        this.multiPrefSelect = selectedBucketItem.multiPrefs;
+      }
+
+      this.itemQuantity = selectedBucketItem.quantity;
+      this.selectedKey = this.navParams.get('itemKey');
+    }
+
     this.selectedFoodItem = this.navParams.get('foodItem');
     this.selectedFoodItem.food_prefs.forEach((pref: FoodPreference) => {
       if (pref.pref_type === 'Single Value') {
@@ -53,31 +73,38 @@ export class OrderPage {
       }
     })
 
-    
+
   }
 
   clickConfirm() {
     let bucketItem: BucketItem = {
+      foodId: this.selectedFoodItem.$key,
       title: this.selectedFoodItem.food_title,
       quantity: this.itemQuantity,
       amount: this.itemQuantity * this.selectedFoodItem.food_price
     }
 
-    if(this.binaryPrefSelect.length > 0) {
+    if (this.binaryPrefSelect.length > 0) {
       bucketItem.binaryPrefs = this.binaryPrefSelect;
     }
 
-    if(this.singlePrefSelect.length > 0) {
+    if (this.singlePrefSelect.length > 0) {
       bucketItem.singlePrefs = this.singlePrefSelect;
     }
 
-    if(this.multiPrefSelect.length > 0) {
+    if (this.multiPrefSelect.length > 0) {
       bucketItem.multiPrefs = this.multiPrefSelect;
     }
 
     setTimeout(() => {
       console.log(bucketItem);
-      this.bucketService.addToItemToBucket(bucketItem).then(() => {}).catch(() => {});
+      if (this.selectedKey != '') {
+        this.bucketService.updateBucketItem(bucketItem, this.selectedKey).then(() => {}).catch(() => {});
+      }
+
+      else {
+        this.bucketService.addItemToBucket(bucketItem).then(() => { }).catch(() => { });
+      }
     }, 300)
   }
 }

@@ -6,13 +6,37 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="nav">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>bucket</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
-
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let bucketItem of bucketList | async">
+      <button ion-item (click)="clickEdit(bucketItem)">
+        <h2>
+          {{bucketItem.title}}
+        </h2>
+        <p>
+          Rs. {{bucketItem.amount}}
+        </p>
+      </button>
+      <ion-item-options side="right">
+        <!--<button ion-button color="primary" (click)="clickEdit(bucketItem)">
+        <ion-icon name="clipboard"></ion-icon>
+        Edit
+      </button>-->
+        <button ion-button color="danger" (click)="clickRemove(bucketItem.$key)">
+        <ion-icon name="trash"></ion-icon>
+        Delete
+      </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
 </ion-content>

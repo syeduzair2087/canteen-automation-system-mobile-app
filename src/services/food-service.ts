@@ -10,6 +10,14 @@ export class FoodService {
         return this.angularFire.database.list('/food');
     }
 
+    getFoodItemById(foodItemKey: string) {
+        return new Promise((res, rej) => {
+            this.angularFire.database.object('/food/' + foodItemKey).subscribe((data: FoodItem) => {
+                res(data);
+            })
+        })
+    }
+
     addFoodItem(foodItem: FoodItem) {
         return new Promise((res, rej) => {
             this.angularFire.database.list('/food').push(foodItem).then((success) => {
