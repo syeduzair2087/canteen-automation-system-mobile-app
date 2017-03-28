@@ -28,7 +28,7 @@ export class MyApp {
       // { title: 'Page Two', component: Page2 },
       { title: 'Foods', component: FoodPage },
       { title: 'Bucket', component: BucketPage },
-      { title: 'View Order', component: OrderPage },
+      { title: 'View Orders', component: OrderPage },
       { title: 'Profile', component: ProfilePage }
     ];
 

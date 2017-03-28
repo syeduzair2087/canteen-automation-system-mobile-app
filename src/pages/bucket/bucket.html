@@ -10,7 +10,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>bucket</ion-title>
+    <ion-title>Bucket</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -26,12 +26,11 @@
         <p>
           Rs. {{bucketItem.amount}}
         </p>
+        <p>
+          Quantity: {{bucketItem.quantity}}
+        </p>
       </button>
       <ion-item-options side="right">
-        <!--<button ion-button color="primary" (click)="clickEdit(bucketItem)">
-        <ion-icon name="clipboard"></ion-icon>
-        Edit
-      </button>-->
         <button ion-button color="danger" (click)="clickRemove(bucketItem.$key)">
         <ion-icon name="trash"></ion-icon>
         Delete
@@ -39,4 +38,14 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
+  <ion-fab bottom right *ngIf="(bucketList | async)?.length > 0">
+    <button ion-fab mini (click)="clickCheckout()">
+      <ion-icon name="checkmark"></ion-icon>
+      </button>
+  </ion-fab>
+  <div *ngIf="(bucketList | async)?.length == 0" text-center class="center">
+    <h2>
+      Sorry, you don't have any items in your bucket.
+    </h2>
+  </div>
 </ion-content>

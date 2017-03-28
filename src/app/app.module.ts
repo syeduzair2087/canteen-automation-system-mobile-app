@@ -6,7 +6,8 @@ import { Page2 } from '../pages/page2/page2';
 
 //////////PAGES//////////
 import { FoodPage } from '../pages/food/food';
-import { FoodDetailsPage } from '../pages/food-details/food-details'
+import { FoodDetailsPage } from '../pages/food-details/food-details';
+import { FoodOrderPage } from '../pages/food-order/food-order';
 import { BucketPage } from '../pages/bucket/bucket';
 import { OrderPage } from '../pages/order/order';
 import { ProfilePage } from '../pages/profile/profile';
@@ -18,6 +19,8 @@ import { HomePage } from '../pages/home/home';
 import { AccountService } from '../services/account-service';
 import { FoodService } from '../services/food-service';
 import { BucketService } from '../services/bucket-service';
+import { OrderService } from '../services/order-service';
+import { DatePipe } from '@angular/common';
 
 //////////MODULES//////////
 import { AngularFireModule, AuthMethods, AuthProviders } from 'angularfire2';
@@ -42,6 +45,7 @@ export const firebaseAuthConfig = {
     Page2,
     FoodPage,
     FoodDetailsPage,
+    FoodOrderPage,
     BucketPage,
     OrderPage,
     ProfilePage,
@@ -63,6 +67,7 @@ export const firebaseAuthConfig = {
     Page2,
     FoodPage,
     FoodDetailsPage,
+    FoodOrderPage,
     BucketPage,
     OrderPage,
     ProfilePage,
@@ -74,7 +79,9 @@ export const firebaseAuthConfig = {
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     AccountService,
     FoodService,
-    BucketService
+    BucketService,
+    OrderService,
+    DatePipe
     ]
 })
 export class AppModule { }

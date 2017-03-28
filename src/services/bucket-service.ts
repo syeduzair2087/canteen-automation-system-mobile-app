@@ -89,4 +89,29 @@ export class BucketService {
             })
         })
     }
+
+    emptyBucket() {
+        let loading = this.loadingCtrl.create({
+            content: 'Emptying bucket'
+        });
+        loading.present();
+        return new Promise((res, rej) => {
+            this.angularFire.database.list('/buckets/' + localStorage.getItem('uid')).remove().then(() => {
+                // this.toastCtrl.create({
+                //     message: 'Your bucket has been emptied.',
+                //     duration: 4500
+                // }).present();
+                loading.dismiss();
+                res();
+            }).catch((error) => {
+                console.log(error);
+                this.toastCtrl.create({
+                    message: 'Failed to empty bucket.',
+                    duration: 4500
+                }).present();
+                loading.dismiss();
+                rej();
+            })
+        })
+    }
 }

@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { BucketService } from '../../services/bucket-service';
-import { FoodService } from '../../services/food-service'
+import { FoodService } from '../../services/food-service';
+import { OrderService } from '../../services/order-service'
 import { BucketItem } from '../../models/bucketItem.model';
+import { Order } from '../../models/order.model'
 import { FirebaseListObservable } from 'angularfire2';
-import { OrderPage } from '../order/order';
+import { FoodOrderPage } from '../food-order/food-order';
 
 /*
   Generated class for the Bucket page.
@@ -19,7 +22,7 @@ import { OrderPage } from '../order/order';
 export class BucketPage {
   bucketList: FirebaseListObservable<Array<BucketItem>>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private bucketService: BucketService, private foodService: FoodService) { }
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private bucketService: BucketService, private foodService: FoodService, private datePipe: DatePipe, private orderService: OrderService) { }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad BucketPage');
@@ -48,7 +51,7 @@ export class BucketPage {
   clickEdit(bucketItem: BucketItem) {
     this.foodService.getFoodItemById(bucketItem.foodId).then((data) => {
       // console.log(data);
-      this.navCtrl.push(OrderPage, {
+      this.navCtrl.push(FoodOrderPage, {
         foodItem: data,
         bucketItem: bucketItem,
         itemKey: bucketItem.$key
@@ -57,4 +60,43 @@ export class BucketPage {
     // this.navCtrl.push(OrderPage);
   }
 
+  clickCheckout() {
+    this.alertCtrl.create({
+      title: 'Confirm',
+      message: 'Are you sure you want to place the order?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'OK',
+          handler: () => {
+            let items: Array<BucketItem> = [];
+            this.bucketList.subscribe((data) => {
+              items = data;
+            }).unsubscribe();
+            let totalAmount: number = 0;
+            items.forEach((item: BucketItem, index: number) => {
+              totalAmount += item.amount;
+              if (index == (items.length - 1)) {
+                let order: Order = {
+                  userId: localStorage.getItem('uid'),
+                  orderTime: new Date().toString(),
+                  status: 'Pending',
+                  amount: totalAmount,
+                  items: items
+                };
+
+                console.log(order);
+                this.orderService.placeOrder(order).then(() => {
+                  this.bucketService.emptyBucket().then(() => { }).catch(() => { })
+                }).catch(() => { });
+              }
+            })
+          }
+        }
+      ]
+    }).present();
+  }
 }

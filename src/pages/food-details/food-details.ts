@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { FoodItem } from '../../models/food.model';
-import { FoodPreference } from '../../models/preference.model';
-import { OrderPage } from '../order/order';
+import { FoodOrderPage } from '../food-order/food-order';
 
 /*
   Generated class for the FoodDetails page.
@@ -17,7 +16,7 @@ import { OrderPage } from '../order/order';
 export class FoodDetailsPage {
   selectedFoodItem: FoodItem;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) { }
+  constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad FoodDetailsPage');
@@ -25,7 +24,7 @@ export class FoodDetailsPage {
   }
 
   clickAddToBucket() {
-    this.navCtrl.push(OrderPage, { foodItem: this.selectedFoodItem });
+    this.navCtrl.push(FoodOrderPage, { foodItem : this.selectedFoodItem});
   }
 
 }

@@ -7,49 +7,27 @@
 <ion-header>
 
   <ion-navbar color="nav">
-    <!--<button ion-button menuToggle>
+    <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
-    </button>-->
-    <ion-title>Add To Bucket</ion-title>
+    </button>
+    <ion-title>Orders</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-  <ion-item *ngFor="let binaryPref of binaryPrefs; let binaryIndex = index">
-    <ion-label>{{binaryPref.pref_title}}</ion-label>
-    <ion-checkbox [(ngModel)]="binaryPrefSelect[binaryIndex].value"></ion-checkbox>
-  </ion-item>
-
-  <ion-list radio-group *ngFor="let singlePref of singlePrefs; let singleIndex = index" [(ngModel)]="singlePrefSelect[singleIndex].value">
-
-    <ion-list-header>
-      {{singlePref.pref_title}}
-    </ion-list-header>
-
-    <ion-item *ngFor="let value of singlePref.pref_values">
-      <ion-label>{{value}}</ion-label>
-      <ion-radio [value]="value"></ion-radio>
-    </ion-item>
+  <ion-list>
+    <button ion-item *ngFor="let order of orderList">
+      <h2>
+        {{order.orderTime | date: 'dd/MM/yyyy HH:mm'}}
+        </h2>
+        <p>
+          Amount: Rs. {{order.amount}}
+        </p>
+      <p>
+        Status: {{order.status}}
+      </p>
+    </button>
   </ion-list>
-
-  <ion-list *ngFor="let multiPref of multiPrefs; let multiIndex = index">
-
-    <ion-list-header>
-      {{multiPref.pref_title}}
-    </ion-list-header>
-
-    <ion-item *ngFor="let value of multiPref.pref_values; let valueIndex = index">
-      <ion-label>{{value}}</ion-label>
-      <ion-checkbox [(ngModel)]="multiPrefSelect[multiIndex].values[valueIndex].value"></ion-checkbox>
-    </ion-item>
-  </ion-list>
-
-  <ion-item>
-    <ion-label color="primary" floating>Quantity</ion-label>
-    <ion-input type="number" [(ngModel)]="itemQuantity"></ion-input>
-  </ion-item>
-
-  <button ion-button block (click)="clickConfirm()">Confirm</button>
 </ion-content>
