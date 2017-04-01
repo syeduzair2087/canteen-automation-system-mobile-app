@@ -38,7 +38,7 @@ export class OrderService {
         });
         loading.present();
         return new Promise((res, rej) => {
-            this.angularFire.database.list('/orders/', {
+            this.angularFire.database.list('/orders', {
                 query: {
                     orderByChild: 'userId',
                     equalTo: localStorage.getItem('uid')
