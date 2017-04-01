@@ -10,10 +10,12 @@ import { FoodDetailsPage } from '../pages/food-details/food-details';
 import { FoodOrderPage } from '../pages/food-order/food-order';
 import { BucketPage } from '../pages/bucket/bucket';
 import { OrderPage } from '../pages/order/order';
+import { OrderDetailsPage } from '../pages/order-details/order-details';
 import { ProfilePage } from '../pages/profile/profile';
 import { RegisterPage } from '../pages/register/register';
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
+
 
 //////////SERVICES//////////
 import { AccountService } from '../services/account-service';
@@ -51,7 +53,8 @@ export const firebaseAuthConfig = {
     ProfilePage,
     RegisterPage,
     LoginPage,
-    HomePage
+    HomePage,
+    OrderDetailsPage
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
@@ -73,7 +76,8 @@ export const firebaseAuthConfig = {
     ProfilePage,
     RegisterPage,
     LoginPage,
-    HomePage
+    HomePage,
+    OrderDetailsPage
   ],
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler },

@@ -33,20 +33,58 @@ export class OrderService {
     }
 
     fetchOrders() {
-        let loading = this.LoadingCtrl.create({
-            content: 'Fetching orders...'
-        });
-        loading.present();
-        return new Promise((res, rej) => {
-            this.angularFire.database.list('/orders', {
+        // let loading = this.LoadingCtrl.create({
+        //     content: 'Fetching orders...'
+        // });
+        // loading.present();
+       // return new Promise((res, rej) => {
+            return this.angularFire.database.list('/orders/', {
                 query: {
                     orderByChild: 'userId',
                     equalTo: localStorage.getItem('uid')
                 }
-            }).subscribe((data: Array<Order>) => {
+            });
+        //     .subscribe((data: Array<Order>) => {
+        //         loading.dismiss();
+        //         res(data);
+        //     });
+        // })
+    }
+
+    changeOrderStatus(key){
+        let loading = this.LoadingCtrl.create({
+            content :'Cancelling order...'
+        })
+        loading.present();
+       return new Promise ((res, rej) => {
+            this.angularFire.database.object('/orders/' + key ).update({status:'Cancelled'}).then((success) => {
+                this.toastCtrl.create({
+                    message: 'Order cancel successfully!',
+                    duration: 4500
+                }).present();
+                loading.dismiss();
+                res();
+            }).catch( (error) =>{
+                 this.toastCtrl.create({
+                    message: 'Error while canceling order!',
+                    duration: 4500
+                }).present();
+                loading.dismiss();
+                rej();
+            });    
+        });
+    }
+
+    fetchOrderDetails(key){
+        let loading = this.LoadingCtrl.create({
+            content : 'Fetching order detail!'
+        });
+        loading.present();
+        return new Promise( (res, rej) =>{
+            this.angularFire.database.object('/orders/' + key).subscribe( (data : Order) =>{
                 loading.dismiss();
                 res(data);
             });
-        })
+        }) ;
     }
 }
