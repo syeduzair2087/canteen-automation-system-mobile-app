@@ -1,5 +1,8 @@
 export interface User {
-    displayName: string,
+    name: string,
     email: string,
-    password: string
+    contact: number,
+    cabin: number,
+    password?: string,
+    imageURL?: string
 }

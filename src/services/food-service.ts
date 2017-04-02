@@ -1,13 +1,23 @@
 import { Injectable } from '@angular/core';
+import { LoadingController } from 'ionic-angular';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
-import { FoodItem } from '../models/food.model'
+import { FoodItem } from '../models/food.model';
 
 @Injectable()
 export class FoodService {
-    constructor(private angularFire: AngularFire) { }
+    constructor(private angularFire: AngularFire, private loadingCtrl: LoadingController) { }
 
     getFoodItems() {
-        return this.angularFire.database.list('/food');
+        let loading = this.loadingCtrl.create({
+            content: 'Fetching menu...'
+        });
+        loading.present();
+        return new Promise ((res, rej) => {
+            this.angularFire.database.list('food').subscribe((data) => {
+                loading.dismiss();
+                res(data);
+            })
+        })
     }
 
     getFoodItemById(foodItemKey: string) {

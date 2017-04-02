@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ActionSheetController, AlertController, App } from 'ionic-angular';
-import { Camera } from 'ionic-native'
-import { AccountService } from '../../services/account-service'
-import { HomePage } from '../../pages/home/home'
+import { Camera } from 'ionic-native';
+import { User } from '../../models/user.model';
+import { AccountService } from '../../services/account-service';
+import { HomePage } from '../../pages/home/home';
 
 /*
   Generated class for the Profile page.
@@ -15,19 +16,23 @@ import { HomePage } from '../../pages/home/home'
   templateUrl: 'profile.html'
 })
 export class ProfilePage {
-  userName: string;
-  userEmail: string;
-  userImage: string;
+  user: User;
+  // userName: string;
+  // userEmail: string;
+  // userPhoneNumber: number;
+  // userCabinNumber: number;
+  // userImage: string;
   authObject: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private actionCtrl: ActionSheetController, private alertCtrl: AlertController, private accountService: AccountService, private appCtrl: App) { }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ProfilePage');
-    this.accountService.getUserData().then((data: any) => {
-      this.userName = data.name;
-      this.userEmail = data.email;
-      this.userImage = data.photoUrl;
+    this.accountService.getUserData().then((data: User) => {
+      this.user = data;
+      // this.userName = data.name;
+      // this.userEmail = data.email;
+      // this.userImage = data.photoUrl;
     })
   }
 
@@ -52,8 +57,8 @@ export class ProfilePage {
               sourceType: Camera.PictureSourceType.PHOTOLIBRARY
             }).then((selectedImage) => {
               this.accountService.uploadImage(selectedImage).then((downloadUrl: string) => {
-                this.accountService.updateInfo(this.userName, downloadUrl).then(() => {
-                  this.userImage = downloadUrl;
+                this.accountService.updateInfo(this.user.name, downloadUrl).then(() => {
+                  this.user.imageURL = downloadUrl;
                   this.alertCtrl.create({
                     subTitle: 'Your image has been successfully updated.',
                     buttons: [
@@ -105,8 +110,8 @@ export class ProfilePage {
               sourceType: Camera.PictureSourceType.CAMERA
             }).then((selectedImage) => {
               this.accountService.uploadImage(selectedImage).then((downloadUrl: string) => {
-                this.accountService.updateInfo(this.userName, downloadUrl).then(() => {
-                  this.userImage = downloadUrl;
+                this.accountService.updateInfo(this.user.name, downloadUrl).then(() => {
+                  this.user.imageURL = downloadUrl;
                   this.alertCtrl.create({
                     subTitle: 'Your image has been successfully updated.',
                     buttons: [
@@ -155,7 +160,7 @@ export class ProfilePage {
       inputs: [
         {
           name: 'txtNewName',
-          value: this.userName
+          value: this.user.name
         }
       ],
       buttons: [
@@ -166,7 +171,7 @@ export class ProfilePage {
         {
           text: 'OK',
           handler: (data) => {
-            this.accountService.updateInfo(data.txtNewName, this.userImage).then(() => this.userName = data.txtNewName);
+            this.accountService.updateInfo(data.txtNewName, this.user.imageURL).then(() => this.user.name = data.txtNewName);
           }
         }
       ]
@@ -180,7 +185,7 @@ export class ProfilePage {
         {
           name: 'txtNewEmail',
           type: 'email',
-          value: this.userEmail
+          value: this.user.email
         }
       ],
       buttons: [
@@ -191,7 +196,57 @@ export class ProfilePage {
         {
           text: 'OK',
           handler: (data) => {
-            this.accountService.updateEmail(data.txtNewEmail).then(() => this.userEmail = data.txtNewEmail).catch(() => { });
+            this.accountService.updateEmail(data.txtNewEmail).then(() => this.user.email = data.txtNewEmail).catch(() => { });
+          }
+        }
+      ]
+    }).present();
+  }
+
+  clickPhone() {
+    this.alertCtrl.create({
+      subTitle: 'Enter new phone Number',
+      inputs: [
+        {
+          name: 'txtNewPhone',
+          type: 'number',
+          value: this.user.contact.toString()
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'OK',
+          handler: (data) => {
+            this.accountService.updateContact(data.txtNewPhone).catch(() => { });
+          }
+        }
+      ]
+    }).present();
+  }
+
+  clickCabin() {
+    this.alertCtrl.create({
+      subTitle: 'Enter new cabin Number',
+      inputs: [
+        {
+          name: 'txtNewCabin',
+          type: 'number',
+          value: this.user.cabin.toString()
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'OK',
+          handler: (data) => {
+            this.accountService.updateCabin(data.txtNewCabin).catch(() => { });
           }
         }
       ]
@@ -235,8 +290,8 @@ export class ProfilePage {
           text: 'Confirm',
           handler: () => {
             this.accountService.removeAccount().then(() => {
-            this.appCtrl.getActiveNav().setRoot({ title: 'Canteen Automation System', component: HomePage }.component);
-            }).catch(() => {})
+              this.appCtrl.getActiveNav().setRoot({ title: 'Canteen Automation System', component: HomePage }.component);
+            }).catch(() => { })
           }
         }
       ]

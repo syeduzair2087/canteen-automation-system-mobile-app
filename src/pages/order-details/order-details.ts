@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import {OrderService} from '../../services/order-service';
-import {Order} from '../../models/order.model';
+import { FoodService } from '../../services/food-service';
+import { OrderService } from '../../services/order-service';
+import { Order } from '../../models/order.model';
+import { BucketItem } from '../../models/bucketItem.model';
+import { OrderPrefsPage } from '../order-prefs/order-prefs'
 
 /*
   Generated class for the OrderDetails page.
@@ -14,27 +17,34 @@ import {Order} from '../../models/order.model';
   templateUrl: 'order-details.html'
 })
 export class OrderDetailsPage {
-key: any;
-OrderDetail: Order = {
-   userId: '',
+  selectedOrder: Order = {
+    userId: '',
     orderTime: '',
     status: '',
-    amount: null,
+    amount: 0,
     items: []
-};
-  constructor(public navCtrl: NavController, public navParams: NavParams, private orderService: OrderService) {}
+  };
+  constructor(public navCtrl: NavController, public navParams: NavParams, private foodService: FoodService, private orderService: OrderService) { }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad OrderDetailsPage');
-    this.key = this.navParams.get('orderKey');
-    console.log(this.key);
-    
-    this.orderService.fetchOrderDetails(this.key).then( (data : Order) => {
-      this.OrderDetail = data;
+    let orderKey = this.navParams.get('orderKey');
+    console.log(orderKey);
+    this.orderService.fetchOrderDetails(orderKey).then((data: Order) => {
+      console.log(data);
+      this.selectedOrder = data;
       // console.log(this.OrderDetail);
-      console.log(this.OrderDetail.amount);
-      
-      
+      // console.log(this.selectedOrder.amount);
+    })
+  }
+
+  clickItem(selectedItem: BucketItem) {
+    this.foodService.getFoodItemById(selectedItem.foodId).then((data) => {
+      console.log(selectedItem);
+      this.navCtrl.push(OrderPrefsPage, {
+        item: selectedItem,
+        foodItem: data
+      })
     })
   }
 

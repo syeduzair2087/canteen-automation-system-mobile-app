@@ -15,7 +15,10 @@ import { ProfilePage } from '../pages/profile/profile';
 import { RegisterPage } from '../pages/register/register';
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
+import { OrderPrefsPage } from '../pages/order-prefs/order-prefs';
 
+//////////PIPES//////////
+import { ReversePipe } from '../pipes/reverse.pipe';
 
 //////////SERVICES//////////
 import { AccountService } from '../services/account-service';
@@ -54,7 +57,9 @@ export const firebaseAuthConfig = {
     RegisterPage,
     LoginPage,
     HomePage,
-    OrderDetailsPage
+    OrderDetailsPage,
+    OrderPrefsPage,
+    ReversePipe
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
@@ -77,7 +82,8 @@ export const firebaseAuthConfig = {
     RegisterPage,
     LoginPage,
     HomePage,
-    OrderDetailsPage
+    OrderDetailsPage,
+    OrderPrefsPage
   ],
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler },

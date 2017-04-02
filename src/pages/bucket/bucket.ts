@@ -27,6 +27,7 @@ export class BucketPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad BucketPage');
     this.bucketList = this.bucketService.fetchBucket();
+    console.log(this.orderService.getServerTimestamp());
   }
 
   clickRemove(itemIndex: string) {
@@ -82,7 +83,8 @@ export class BucketPage {
               if (index == (items.length - 1)) {
                 let order: Order = {
                   userId: localStorage.getItem('uid'),
-                  orderTime: new Date().toString(),
+                  // orderTime: new Date().toString(),
+                  orderTime: this.orderService.getServerTimestamp(),
                   status: 'Pending',
                   amount: totalAmount,
                   items: items

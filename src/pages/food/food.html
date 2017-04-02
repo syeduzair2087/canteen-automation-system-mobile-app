@@ -17,10 +17,10 @@
 
 
 <ion-content padding>
-  <!--<ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>-->
-  <button ion-item *ngFor="let foodItem of foodList | async" (click)="clickFoodItem(foodItem)">
+  </ion-refresher>
+  <button ion-item *ngFor="let foodItem of foodList" (click)="clickFoodItem(foodItem)">
     <!--<ion-avatar item-left>
       <img [attr.src]="this.imgSource" onerror="this.src = './assets/images/no_image.png'">
     </ion-avatar>-->

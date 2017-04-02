@@ -1,11 +1,19 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { LoadingController, ToastController } from 'ionic-angular';
-import { AngularFire } from 'angularfire2';
+import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import { Order } from '../models/order.model';
+import * as firebase from 'firebase';
 
 @Injectable()
 export class OrderService {
-    public constructor(private angularFire: AngularFire, private toastCtrl: ToastController, private LoadingCtrl: LoadingController) { }
+
+    public constructor(private angularFire: AngularFire, private toastCtrl: ToastController, private LoadingCtrl: LoadingController) {
+        // this.firebaseApp = firebaseApp;
+    }
+
+    getServerTimestamp() {
+        return firebase.database.ServerValue.TIMESTAMP
+    }
 
     placeOrder(order: Order) {
         let loading = this.LoadingCtrl.create({
@@ -33,58 +41,48 @@ export class OrderService {
     }
 
     fetchOrders() {
-        // let loading = this.LoadingCtrl.create({
-        //     content: 'Fetching orders...'
-        // });
-        // loading.present();
-       // return new Promise((res, rej) => {
-            return this.angularFire.database.list('/orders/', {
-                query: {
-                    orderByChild: 'userId',
-                    equalTo: localStorage.getItem('uid')
-                }
-            });
-        //     .subscribe((data: Array<Order>) => {
-        //         loading.dismiss();
-        //         res(data);
-        //     });
-        // })
+        return this.angularFire.database.list('/orders/', {
+            query: {
+                orderByChild: 'userId',
+                equalTo: localStorage.getItem('uid')
+            }
+        });
     }
 
-    changeOrderStatus(key){
+    cancelOrder(orderKey: string) {
         let loading = this.LoadingCtrl.create({
-            content :'Cancelling order...'
+            content: 'Cancelling order...'
         })
         loading.present();
-       return new Promise ((res, rej) => {
-            this.angularFire.database.object('/orders/' + key ).update({status:'Cancelled'}).then((success) => {
+        return new Promise((res, rej) => {
+            this.angularFire.database.object('/orders/' + orderKey).update({ status: 'Cancelled' }).then((success) => {
                 this.toastCtrl.create({
-                    message: 'Order cancel successfully!',
+                    message: 'Order cancelled.',
                     duration: 4500
                 }).present();
                 loading.dismiss();
                 res();
-            }).catch( (error) =>{
-                 this.toastCtrl.create({
-                    message: 'Error while canceling order!',
+            }).catch((error) => {
+                this.toastCtrl.create({
+                    message: 'Failed to cancel order.',
                     duration: 4500
                 }).present();
                 loading.dismiss();
                 rej();
-            });    
+            });
         });
     }
 
-    fetchOrderDetails(key){
+    fetchOrderDetails(key) {
         let loading = this.LoadingCtrl.create({
-            content : 'Fetching order detail!'
+            content: 'Loading order items...'
         });
         loading.present();
-        return new Promise( (res, rej) =>{
-            this.angularFire.database.object('/orders/' + key).subscribe( (data : Order) =>{
+        return new Promise((res, rej) => {
+            this.angularFire.database.object('/orders/' + key).subscribe((data: Order) => {
                 loading.dismiss();
                 res(data);
             });
-        }) ;
+        });
     }
 }

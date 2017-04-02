@@ -16,10 +16,10 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
   <ion-list>
-    <ion-item-sliding *ngFor="let order of orderList | async">
-    <button ion-item  (click) = "viewOrderDetail(order.$key)">
+    <ion-item-sliding *ngFor="let order of orderList | async | reverse">
+      <button ion-item (click)="viewOrderDetail(order.$key)">
       <h2>
         {{order.orderTime | date: 'dd/MM/yyyy HH:mm'}}
         </h2>
@@ -30,12 +30,17 @@
         Status: {{order.status}}
       </p>
     </button>
-    <ion-item-options slide="right" *ngIf = 'order.status == "Pending" '>
-      <button ion-button color="danger" (click)="CancelOrder(order.$key)">
+      <ion-item-options slide="right" *ngIf='order.status == "Pending" '>
+        <button ion-button color="danger" (click)="CancelOrder(order.$key)">
         <ion-icon name="close"></ion-icon>
         Cancel Order
       </button>
-    </ion-item-options>
+      </ion-item-options>
     </ion-item-sliding>
   </ion-list>
+  <div *ngIf="(orderList | async)?.length == 0" text-center class="center">
+    <h2>
+      Sorry, you have not placed any orders yet.
+    </h2>
+  </div>
 </ion-content>

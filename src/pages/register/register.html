@@ -28,10 +28,18 @@
         <ion-input type="email" color="inverse" #txtEmail></ion-input>
       </ion-item>
       <ion-item>
+        <ion-label floating>Phone Number</ion-label>
+        <ion-input type="number" color="inverse" #txtPhone></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Cabin Number</ion-label>
+        <ion-input type="number" color="inverse" #txtCabin></ion-input>
+      </ion-item>
+      <ion-item>
         <ion-label floating>Password</ion-label>
         <ion-input type="password" color="inverse" #txtPassword></ion-input>
       </ion-item>
-      <button ion-button full (click)="clickRegister(txtDisplayName.value, txtEmail.value, txtPassword.value)">Register</button>
+      <button ion-button full (click)="clickRegister(txtDisplayName.value, txtEmail.value, txtPhone.value, txtCabin.value, txtPassword.value)">Register</button>
     </ion-list>
   </ion-card>
 </ion-content>

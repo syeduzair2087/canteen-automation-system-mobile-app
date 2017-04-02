@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { AngularFire, FirebaseAuthState, FirebaseApp } from 'angularfire2';
 import { AlertController, LoadingController, ToastController } from 'ionic-angular'
 import * as firebase from 'firebase';
+import { User } from '../models/user.model';
 
 @Injectable()
 export class AccountService {
@@ -11,7 +12,7 @@ export class AccountService {
         this.firebaseApp = firebaseApp;
     }
 
-    registerUser(displayName: string, email: string, password: string) {
+    registerUser(displayName: string, email: string, phoneNumber: number, cabinNumber: number, password: string) {
         let loading = this.loadingCtrl.create({
             content: 'Registering user...'
         });
@@ -22,7 +23,12 @@ export class AccountService {
                     displayName: displayName,
                     photoURL: 'https://firebasestorage.googleapis.com/v0/b/canteenautomationsystem.appspot.com/o/assets%2Fno-image.jpg?alt=media&token=ee3b6fc2-8906-4dac-abea-43f728190f22'
                 }).then(() => {
-                    this.angularFire.database.object('roles/clients/' + user.uid).set({ email: user.auth.email });
+                    this.angularFire.database.object('roles/clients/' + user.uid).set({
+                        name: displayName,
+                        email: email,
+                        contact: phoneNumber,
+                        cabin: cabinNumber
+                    });
                     loading.dismiss().then(() => {
                         this.toastCtrl.create({
                             message: 'Registered successfully!',
@@ -158,12 +164,16 @@ export class AccountService {
             this.angularFire.auth.subscribe((user: FirebaseAuthState) => {
                 user.auth.updateEmail(emailValue).then((success) => {
                     // this.loginServices.updateLoginState();
-                    this.toastCtrl.create({
-                        message: 'Information updated successfully!',
-                        duration: 3000
-                    }).present();
-                    loading.dismiss();
-                    res();
+                    this.angularFire.database.object('/roles/clients/' + localStorage.getItem('uid')).set({
+                        email: emailValue
+                    }).then(() => {
+                        this.toastCtrl.create({
+                            message: 'Information updated successfully!',
+                            duration: 3000
+                        }).present();
+                        loading.dismiss();
+                        res();
+                    })
                 }).catch((err: any) => {
                     this.toastCtrl.create({
                         message: 'Information update failed!',
@@ -188,6 +198,58 @@ export class AccountService {
         })
     }
 
+    updateContact(phoneNumber: number) {
+        let loading = this.loadingCtrl.create({
+            content: 'Updating phone number...'
+        });
+        loading.present();
+        return new Promise((res, rej) => {
+            this.angularFire.database.object('/roles/clients/' + localStorage.getItem('uid')).update({
+                contact: phoneNumber
+            }).then(() => {
+                this.toastCtrl.create({
+                    message: 'Phone number updated.',
+                    duration: 4500
+                }).present();
+                loading.dismiss();
+                res();
+            }).catch(() => {
+                this.toastCtrl.create({
+                    message: 'Failed to update phone number.',
+                    duration: 4500
+                }).present();
+                loading.dismiss();
+                rej();
+            })
+        })
+    }
+
+    updateCabin(cabinNumber: number) {
+        let loading = this.loadingCtrl.create({
+            content: 'Updating cabin number...'
+        });
+        loading.present();
+        return new Promise((res, rej) => {
+            this.angularFire.database.object('/roles/clients/' + localStorage.getItem('uid')).update({
+                cabin: cabinNumber
+            }).then(() => {
+                this.toastCtrl.create({
+                    message: 'Cabin number updated.',
+                    duration: 4500
+                }).present();
+                loading.dismiss();
+                res();
+            }).catch(() => {
+                this.toastCtrl.create({
+                    message: 'Failed to update cabin number.',
+                    duration: 4500
+                }).present();
+                loading.dismiss();
+                rej();
+            })
+        })
+    }
+
     updateInfo(displayNameValue, imageUrl) {
         return new Promise((res, rej) => {
             let loading = this.loadingCtrl.create({
@@ -200,12 +262,16 @@ export class AccountService {
                         displayName: displayNameValue,
                         photoURL: imageUrl,
                     }).then(() => {
-                        this.toastCtrl.create({
-                            message: 'Information updated successfully!',
-                            duration: 3000
-                        }).present();
-                        loading.dismiss();
-                        res();
+                        this.angularFire.database.object('/roles/clients/' + localStorage.getItem('uid')).set({
+                            name: displayNameValue
+                        }).then(() => {
+                            this.toastCtrl.create({
+                                message: 'Information updated successfully!',
+                                duration: 3000
+                            }).present();
+                            loading.dismiss();
+                            res();
+                        })
                     }).catch((err) => {
                         this.toastCtrl.create({
                             message: 'Information update failed!',
@@ -228,13 +294,18 @@ export class AccountService {
             let currentAuth = this.angularFire.auth;
             currentAuth.subscribe((data: FirebaseAuthState) => {
                 if (data) {
-                    let userData = {
-                        email: data.auth.email,
-                        name: data.auth.displayName,
-                        photoUrl: data.auth.photoURL
-                    }
-                    loading.dismiss();
-                    res(userData);
+                    this.angularFire.database.object('/roles/clients/' + localStorage.getItem('uid')).subscribe((clientData: any) => {
+                        let userData: User = {
+                            email: data.auth.email,
+                            name: data.auth.displayName,
+                            imageURL: data.auth.photoURL,
+                            contact: clientData.contact,
+                            cabin: clientData.cabin
+                        }
+                        console.log(userData);
+                        loading.dismiss();
+                        res(userData);
+                    })
                 }
                 else {
                     loading.dismiss();

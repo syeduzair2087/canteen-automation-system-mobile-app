@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
-import {FirebaseListObservable} from 'angularfire2';
+import { FirebaseListObservable } from 'angularfire2';
 import { Order } from '../../models/order.model';
 import { OrderService } from '../../services/order-service';
-import {OrderDetailsPage} from '../order-details/order-details';
+import { OrderDetailsPage } from '../order-details/order-details';
+import { ReversePipe } from '../../pipes/reverse.pipe';
 
 /*
   Generated class for the Order page.
@@ -17,46 +18,41 @@ import {OrderDetailsPage} from '../order-details/order-details';
 })
 export class OrderPage {
   // orderList: Array<Order> = [];
-  orderList: FirebaseListObservable<Array<Order>>;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private orderService: OrderService, private altrCtlr: AlertController) { }
+  orderList: any;
+  constructor(public navCtrl: NavController, public navParams: NavParams, private orderService: OrderService, private altrCtrl: AlertController) { }
 
-viewOrderDetail($key){
-  this.navCtrl.push(OrderDetailsPage , {orderKey:$key});
-  
-}
+  viewOrderDetail($key) {
+    this.navCtrl.push(OrderDetailsPage, { orderKey: $key });
 
-CancelOrder($key){
-  
-  let conformAlert = this.altrCtlr.create({
-    title : 'Cancel order',
-    message : 'Are you sure? you want to cancel this order!',
-    buttons : [
-      {
-        text : 'Cancel \
-         order',
-        handler : data => {
-          console.log($key);
-          this.orderService.changeOrderStatus($key).then((success) => {
+  }
 
-          }).catch( (error) =>{
-            
-          })
+  CancelOrder($key) {
+    let conformAlert = this.altrCtrl.create({
+      title: 'Confirm',
+      message: 'Are you sure you want to cancel the order?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Confirm',
+          handler: data => {
+            console.log($key);
+            this.orderService.cancelOrder($key).then(() => { }).catch(() => { })
+          }
         }
-      },
-      {
-        text : 'Leave',
-        handler : data => {
-
-        } 
-      }
-    ]
-  });
-  conformAlert.present();
-}
+      ]
+    });
+    conformAlert.present();
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad OrderPage');
-    this.orderList =  this.orderService.fetchOrders()
+    // this.orderService.fetchOrders().subscribe((data) => {
+    //   this.orderList = data
+    // })
+    this.orderList = this.orderService.fetchOrders()
     // .then((data: Array<Order>) => {
     //   this.orderList = data;
     // })

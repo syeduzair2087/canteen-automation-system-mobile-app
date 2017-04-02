@@ -16,16 +16,25 @@ import { FoodDetailsPage } from '../food-details/food-details'
   templateUrl: 'food.html'
 })
 export class FoodPage {
-  foodList: FirebaseListObservable<Array<FoodItem>>;
+  foodList: Array<FoodItem>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private foodService: FoodService) {}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad FoodPage');
-    this.foodList = this.foodService.getFoodItems();
+    this.foodService.getFoodItems().then((data: FoodItem[]) => {
+      this.foodList = data;
+    })
   }
 
   clickFoodItem(selectedFoodItem: FoodItem){
     this.navCtrl.push(FoodDetailsPage, { foodItem : selectedFoodItem});
+  }
+
+  doRefresh(refresher) {
+    this.foodService.getFoodItems().then((data: FoodItem[]) => {
+      this.foodList = data;
+      refresher.complete();
+    })
   }
 }

@@ -20,7 +20,7 @@ export class RegisterPage {
     console.log('ionViewDidLoad RegisterPage');
   }
 
-  clickRegister(displayName: string, email: string, password: string) {
-    this.accountService.registerUser(displayName, email, password);
+  clickRegister(displayName: string, email: string, phoneNumber: number, cabinNumber: number, password: string) {
+    this.accountService.registerUser(displayName, email, phoneNumber, cabinNumber, password);
   }
 }
