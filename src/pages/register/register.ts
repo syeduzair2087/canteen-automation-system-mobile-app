@@ -14,13 +14,15 @@ import { AccountService } from '../../services/account-service'
 })
 export class RegisterPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private accountService: AccountService) {}
+  constructor(public navCtrl: NavController, public navParams: NavParams, private accountService: AccountService) { }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RegisterPage');
   }
 
   clickRegister(displayName: string, email: string, phoneNumber: number, cabinNumber: number, password: string) {
-    this.accountService.registerUser(displayName, email, phoneNumber, cabinNumber, password);
+    this.accountService.registerUser(displayName, email, phoneNumber, cabinNumber, password).then(() => {
+      this.navCtrl.pop();
+    })
   }
 }

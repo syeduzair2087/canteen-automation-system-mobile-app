@@ -17,11 +17,11 @@
 
 
 <ion-content padding>
-  <img [src]="userImage" class="rounded-circle" width="75%" padding>
+  <img [src]="user.imageURL" class="rounded-circle" width="75%" padding>
   <ion-list no-lines>
     <ion-item>
       <h1 text-center>
-        {{userName}}
+        {{user.name}}
       </h1>
     </ion-item>
     <button button ion-button block (click)="clickImage()">Upload Image</button>

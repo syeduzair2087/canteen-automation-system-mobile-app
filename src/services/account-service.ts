@@ -164,7 +164,7 @@ export class AccountService {
             this.angularFire.auth.subscribe((user: FirebaseAuthState) => {
                 user.auth.updateEmail(emailValue).then((success) => {
                     // this.loginServices.updateLoginState();
-                    this.angularFire.database.object('/roles/clients/' + localStorage.getItem('uid')).set({
+                    this.angularFire.database.object('/roles/clients/' + localStorage.getItem('uid')).update({
                         email: emailValue
                     }).then(() => {
                         this.toastCtrl.create({
@@ -262,7 +262,7 @@ export class AccountService {
                         displayName: displayNameValue,
                         photoURL: imageUrl,
                     }).then(() => {
-                        this.angularFire.database.object('/roles/clients/' + localStorage.getItem('uid')).set({
+                        this.angularFire.database.object('/roles/clients/' + localStorage.getItem('uid')).update({
                             name: displayNameValue
                         }).then(() => {
                             this.toastCtrl.create({

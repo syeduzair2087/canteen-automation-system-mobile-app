@@ -3,7 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { FirebaseListObservable } from 'angularfire2';
 import { FoodItem } from '../../models/food.model';
 import { FoodService } from '../../services/food-service';
-import { FoodDetailsPage } from '../food-details/food-details'
+import { FoodOrderPage } from '../food-order/food-order';
 
 /*
   Generated class for the Food page.
@@ -28,7 +28,8 @@ export class FoodPage {
   }
 
   clickFoodItem(selectedFoodItem: FoodItem){
-    this.navCtrl.push(FoodDetailsPage, { foodItem : selectedFoodItem});
+    // this.navCtrl.push(FoodDetailsPage, { foodItem : selectedFoodItem});
+    this.navCtrl.push(FoodOrderPage, { foodItem : selectedFoodItem});
   }
 
   doRefresh(refresher) {

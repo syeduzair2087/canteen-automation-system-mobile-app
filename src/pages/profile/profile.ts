@@ -16,7 +16,13 @@ import { HomePage } from '../../pages/home/home';
   templateUrl: 'profile.html'
 })
 export class ProfilePage {
-  user: User;
+  user: User = {
+    name: '',
+    email: '',
+    contact: null,
+    cabin: null,
+    imageURL: ''
+  };
   // userName: string;
   // userEmail: string;
   // userPhoneNumber: number;
@@ -29,6 +35,7 @@ export class ProfilePage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ProfilePage');
     this.accountService.getUserData().then((data: User) => {
+      console.log(data);
       this.user = data;
       // this.userName = data.name;
       // this.userEmail = data.email;

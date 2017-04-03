@@ -99,11 +99,15 @@ export class FoodOrderPage {
     setTimeout(() => {
       console.log(bucketItem);
       if (this.selectedKey != '') {
-        this.bucketService.updateBucketItem(bucketItem, this.selectedKey).then(() => { }).catch(() => { });
+        this.bucketService.updateBucketItem(bucketItem, this.selectedKey).then(() => {
+          this.navCtrl.pop();
+        }).catch(() => { });
       }
 
       else {
-        this.bucketService.addItemToBucket(bucketItem).then(() => { }).catch(() => { });
+        this.bucketService.addItemToBucket(bucketItem).then(() => {
+          this.navCtrl.pop();
+        }).catch(() => { });
       }
     }, 300)
   }
