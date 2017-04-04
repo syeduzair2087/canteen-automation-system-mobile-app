@@ -55,7 +55,8 @@ export class AccountService {
         });
         loading.present();
         return new Promise((res, rej) => {
-            this.angularFire.database.list('/roles/clients/', {
+
+            let clientSubscription = this.angularFire.database.list('/roles/clients/', {
                 query: {
                     orderByChild: 'email',
                     equalTo: email
@@ -68,15 +69,17 @@ export class AccountService {
                             message: 'Login successful!',
                             duration: 4500
                         }).present();
-                        loading.dismiss()
+                        loading.dismiss();
                         res(user);
+                        clientSubscription.unsubscribe();
                     }).catch((error) => {
                         this.toastCtrl.create({
-                            message: 'Failed to login. Check your credentials and try again.',
+                            message: 'Failed to login. Please try again.',
                             duration: 4500
                         }).present();
                         loading.dismiss();
                         rej(error);
+                        clientSubscription.unsubscribe();
                     })
                 }
                 else {
@@ -86,6 +89,7 @@ export class AccountService {
                     }).present();
                     loading.dismiss();
                     rej('User not found. Please check your credentials and try again');
+                    clientSubscription.unsubscribe();
                 }
             });
         })
@@ -352,7 +356,7 @@ export class AccountService {
                 if (user) {
                     var userId = localStorage.getItem('uid');
                     this.deleteImage(userId, user.auth.photoURL).then(() => {
-                        this.angularFire.database.object('roles/clients/' + userId).remove().then(() => {
+                        this.angularFire.database.list('roles/clients/' + userId).remove().then(() => {
                             localStorage.removeItem('uid');
                             user.auth.delete().then((success) => {
                                 this.toastCtrl.create({
@@ -376,13 +380,27 @@ export class AccountService {
         })
     }
 
+    // deleteImage(userId: string, imageURL: string) {
+    //     return new Promise((res, rej) => {
+    //         if (imageURL != 'https://firebasestorage.googleapis.com/v0/b/canteenautomationsystem.appspot.com/o/assets%2Fno-image.jpg?alt=media&token=ee3b6fc2-8906-4dac-abea-43f728190f22') {
+    //             let image = this.firebaseApp.storage().ref('/profile_images/' + userId);
+    //             image.getDownloadURL().then(() => {
+    //                 image.delete().then(() => res())
+    //             }).catch((err) => rej());
+    //         }
+
+    //         else res();
+    //     })
+    // }
+
     deleteImage(userId: string, imageURL: string) {
         return new Promise((res, rej) => {
             if (imageURL != 'https://firebasestorage.googleapis.com/v0/b/canteenautomationsystem.appspot.com/o/assets%2Fno-image.jpg?alt=media&token=ee3b6fc2-8906-4dac-abea-43f728190f22') {
-                let image = this.firebaseApp.storage().ref('/profile_images/' + userId);
-                image.getDownloadURL().then(() => {
-                    image.delete().then(() => res())
-                }).catch((err) => rej());
+                firebase.app().storage().ref('/profile_images/' + userId).delete().then(() => {
+                    res();
+                }).catch(() => {
+                    rej();
+                })
             }
 
             else res();
