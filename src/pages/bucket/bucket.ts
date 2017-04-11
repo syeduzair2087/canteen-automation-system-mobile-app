@@ -8,6 +8,7 @@ import { BucketItem } from '../../models/bucketItem.model';
 import { Order } from '../../models/order.model'
 import { FirebaseListObservable } from 'angularfire2';
 import { FoodOrderPage } from '../food-order/food-order';
+import { FoodPage } from '../food/food';
 
 /*
   Generated class for the Bucket page.
@@ -85,14 +86,18 @@ export class BucketPage {
                   userId: localStorage.getItem('uid'),
                   // orderTime: new Date().toString(),
                   orderTime: this.orderService.getServerTimestamp(),
-                  status: 'Pending',
+                  status: {
+                    state: 'Pending'
+                  },
                   amount: totalAmount,
                   items: items
                 };
 
                 console.log(order);
                 this.orderService.placeOrder(order).then(() => {
-                  this.bucketService.emptyBucket().then(() => { }).catch(() => { })
+                  this.bucketService.emptyBucket().then(() => {
+                    this.navCtrl.setRoot({ title: 'Foods', component: FoodPage }.component);
+                  }).catch(() => { })
                 }).catch(() => { });
               }
             })

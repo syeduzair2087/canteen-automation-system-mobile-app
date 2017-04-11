@@ -20,11 +20,17 @@
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <button ion-item *ngFor="let foodItem of foodList" (click)="clickFoodItem(foodItem)">
+  <!--<ion-label floating>
+    Email
+  </ion-label>
+  <ion-input type="text" #txtEmail></ion-input>-->
+  <ion-list>
+    <button ion-item *ngFor="let foodItem of foodList" (click)="clickFoodItem(foodItem)">
     <!--<ion-avatar item-left>
       <img [attr.src]="this.imgSource" onerror="this.src = './assets/images/no_image.png'">
     </ion-avatar>-->
     <h2>{{foodItem.food_title}}</h2>
     <p>Rs. {{foodItem.food_price}}</p>
   </button>
+  </ion-list>
 </ion-content>

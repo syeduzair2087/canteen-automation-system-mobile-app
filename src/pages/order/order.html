@@ -27,10 +27,10 @@
           Amount: Rs. {{order.amount}}
         </p>
       <p>
-        Status: {{order.status}}
+        Status: {{order.status.state}}
       </p>
     </button>
-      <ion-item-options slide="right" *ngIf='order.status == "Pending" '>
+      <ion-item-options slide="right" *ngIf='order.status.state == "Pending" '>
         <button ion-button color="danger" (click)="CancelOrder(order.$key)">
         <ion-icon name="close"></ion-icon>
         Cancel Order
