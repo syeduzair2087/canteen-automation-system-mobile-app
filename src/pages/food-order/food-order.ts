@@ -35,26 +35,8 @@ export class FoodOrderPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad FoodOrderPage');
 
-    let selectedBucketItem: BucketItem = this.navParams.get('bucketItem');
-    if (selectedBucketItem) {
-      if (selectedBucketItem.binaryPrefs) {
-        this.binaryPrefSelect = selectedBucketItem.binaryPrefs;
-      }
-
-      if (selectedBucketItem.singlePrefs) {
-        this.singlePrefSelect = selectedBucketItem.singlePrefs;
-      }
-
-      if (selectedBucketItem.multiPrefs) {
-        this.multiPrefSelect = selectedBucketItem.multiPrefs;
-      }
-
-      this.itemQuantity = selectedBucketItem.quantity;
-      this.selectedKey = this.navParams.get('itemKey');
-    }
-
     this.selectedFoodItem = this.navParams.get('foodItem');
-    this.selectedFoodItem.food_prefs.forEach((pref: FoodPreference) => {
+    this.selectedFoodItem.food_prefs.forEach((pref: FoodPreference, index) => {
       if (pref.pref_type === 'Single Value') {
         this.singlePrefs.push(pref);
         this.singlePrefSelect.push({ title: pref.pref_title, value: '' });
@@ -70,6 +52,26 @@ export class FoodOrderPage {
       else if (pref.pref_type === 'Binary') {
         this.binaryPrefs.push(pref);
         this.binaryPrefSelect.push({ title: pref.pref_title, value: false });
+      }
+
+      if (index == (this.selectedFoodItem.food_prefs.length - 1)) {
+        let selectedBucketItem: BucketItem = this.navParams.get('bucketItem');
+        if (selectedBucketItem) {
+          if (selectedBucketItem.binaryPrefs) {
+            this.binaryPrefSelect = selectedBucketItem.binaryPrefs;
+          }
+
+          if (selectedBucketItem.singlePrefs) {
+            this.singlePrefSelect = selectedBucketItem.singlePrefs;
+          }
+
+          if (selectedBucketItem.multiPrefs) {
+            this.multiPrefSelect = selectedBucketItem.multiPrefs;
+          }
+
+          this.itemQuantity = selectedBucketItem.quantity;
+          this.selectedKey = this.navParams.get('itemKey');
+        }
       }
     })
 
