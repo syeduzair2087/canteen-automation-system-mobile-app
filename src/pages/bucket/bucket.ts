@@ -92,7 +92,6 @@ export class BucketPage {
                   amount: totalAmount,
                   items: items
                 };
-
                 console.log(order);
                 this.orderService.placeOrder(order).then(() => {
                   this.bucketService.emptyBucket().then(() => {

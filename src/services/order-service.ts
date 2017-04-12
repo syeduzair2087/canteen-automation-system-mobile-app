@@ -21,20 +21,25 @@ export class OrderService {
         });
         loading.present();
         return new Promise((res, rej) => {
-            this.angularFire.database.list('/orders').push(order).then(() => {
-                this.toastCtrl.create({
-                    message: 'Order placed successfully.',
-                    duration: 4500
-                }).present();
-                loading.dismiss();
-                res();
-            }).catch((error) => {
-                console.log(error);
-                this.toastCtrl.create({
-                    message: 'Failed to place order. Please try again.',
-                    duration: 4500
-                }).present();
-                loading.dismiss();
+            this.getOrderId().then((orderId: number) => {
+                order.orderId = orderId;
+                this.angularFire.database.list('/orders').push(order).then(() => {
+                    this.toastCtrl.create({
+                        message: 'Order placed successfully.',
+                        duration: 4500
+                    }).present();
+                    loading.dismiss();
+                    res();
+                }).catch((error) => {
+                    console.log(error);
+                    this.toastCtrl.create({
+                        message: 'Failed to place order. Please try again.',
+                        duration: 4500
+                    }).present();
+                    loading.dismiss();
+                    rej();
+                })
+            }).catch(() => {
                 rej();
             })
         })
@@ -84,5 +89,24 @@ export class OrderService {
                 res(data);
             });
         });
+    }
+
+    getOrderId() {
+        return new Promise((res, rej) => {
+            let countSubscription = this.angularFire.database.object('/order_count').subscribe((data) => {
+                console.log(data.$value);
+                if (data.$value == null) {
+                    res(1);
+                    this.angularFire.database.object('/order_count').set(2);
+                }
+
+                else {
+                    res(data.$value);
+                    this.angularFire.database.object('/order_count').set(<number>data.$value + 1);
+                }
+
+                countSubscription.unsubscribe();
+            })
+        })
     }
 }

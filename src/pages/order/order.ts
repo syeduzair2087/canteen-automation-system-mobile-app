@@ -56,5 +56,6 @@ export class OrderPage {
     // .then((data: Array<Order>) => {
     //   this.orderList = data;
     // })
+    // this.orderService.getOrderCount().then(() => {});
   }
 }
