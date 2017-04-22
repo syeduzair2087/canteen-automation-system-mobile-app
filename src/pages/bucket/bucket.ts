@@ -93,7 +93,8 @@ export class BucketPage {
                   items: items
                 };
                 console.log(order);
-                this.orderService.placeOrder(order).then(() => {
+                this.orderService.placeOrder(order)
+                .then(() => {
                   this.bucketService.emptyBucket().then(() => {
                     this.navCtrl.setRoot({ title: 'Foods', component: FoodPage }.component);
                   }).catch(() => { })
