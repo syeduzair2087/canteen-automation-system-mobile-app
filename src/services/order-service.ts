@@ -92,10 +92,49 @@ export class OrderService {
     }
 
     getOrderId() {
+        // return new Promise((res, rej) => {
+        //     firebase.database().ref('order_count').transaction((data) => {
+        //         if (data === null) {
+        //             return 1;
+        //         }
+        //         else {
+        //             return data + 1;
+        //         }
+        //     }, (error, committed, snapshot) => {
+        //         if (error) {
+        //             rej(error);
+        //         }
+
+        //         else if (!committed) {
+        //             rej('The value change did not take place.')
+        //         }
+
+        //         else {
+        //             res(snapshot.val());
+        //         }
+        //     })
+        // })
+
+        // return new Promise((res, rej) => {
+        //     let countSubscription = this.angularFire.database.object('/order_count').subscribe((data) => {
+        //         console.log(data.$value);
+        //         if (data.$value == null) {
+        //             res(1);
+        //             this.angularFire.database.object('/order_count').set(2);
+        //         }
+
+        //         else {
+        //             res(data.$value);
+        //             this.angularFire.database.object('/order_count').set(<number>data.$value + 1);
+        //         }
+
+        //         countSubscription.unsubscribe();
+        //     })
+        // })
         return new Promise((res, rej) => {
-            firebase.database().ref('order_count').transaction((data) => {
+            this.angularFire.database.object('order_count').$ref.ref.transaction((data) => {
                 if (data === null) {
-                    return 1;
+                    return 1
                 }
                 else {
                     return data + 1;
@@ -114,23 +153,5 @@ export class OrderService {
                 }
             })
         })
-
-        // return new Promise((res, rej) => {
-        //     let countSubscription = this.angularFire.database.object('/order_count').subscribe((data) => {
-        //         console.log(data.$value);
-        //         if (data.$value == null) {
-        //             res(1);
-        //             this.angularFire.database.object('/order_count').set(2);
-        //         }
-
-        //         else {
-        //             res(data.$value);
-        //             this.angularFire.database.object('/order_count').set(<number>data.$value + 1);
-        //         }
-
-        //         countSubscription.unsubscribe();
-        //     })
-        // })
-
     }
 }
