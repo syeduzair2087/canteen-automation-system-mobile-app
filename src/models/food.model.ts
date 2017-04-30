@@ -1,5 +1,4 @@
-import { FoodPreference } from './preference.model'
-
+import { FoodPreference } from './preference.model';
 export interface FoodItem{
     $key?: string,
     food_title: string,
