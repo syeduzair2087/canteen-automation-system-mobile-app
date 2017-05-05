@@ -23,7 +23,6 @@ export class OrderPage {
 
   viewOrderDetail($key) {
     this.navCtrl.push(OrderDetailsPage, { orderKey: $key });
-
   }
 
   CancelOrder($key) {

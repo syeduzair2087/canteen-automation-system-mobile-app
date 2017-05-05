@@ -20,6 +20,7 @@ export class OrderDetailsPage {
   selectedOrder: Order = {
     userId: '',
     orderTime: '',
+    cabin: 0,
     status: {
       state: ''
     },

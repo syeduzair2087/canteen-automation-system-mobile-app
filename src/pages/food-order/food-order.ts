@@ -36,6 +36,7 @@ export class FoodOrderPage {
     console.log('ionViewDidLoad FoodOrderPage');
 
     this.selectedFoodItem = this.navParams.get('foodItem');
+    this.selectedKey = this.navParams.get('itemKey');
     this.selectedFoodItem.food_prefs.forEach((pref: FoodPreference, index) => {
       if (pref.pref_type === 'Single Value') {
         this.singlePrefs.push(pref);
@@ -99,15 +100,17 @@ export class FoodOrderPage {
     }
 
     setTimeout(() => {
-      console.log(bucketItem);
-      if (this.selectedKey != '') {
+      console.log(this.selectedKey);
+      if (this.selectedKey !== undefined) {
         this.bucketService.updateBucketItem(bucketItem, this.selectedKey).then(() => {
+          console.log('edit fired');
           this.navCtrl.pop();
         }).catch(() => { });
       }
 
       else {
         this.bucketService.addItemToBucket(bucketItem).then(() => {
+          console.log('add fired');
           this.navCtrl.pop();
         }).catch(() => { });
       }

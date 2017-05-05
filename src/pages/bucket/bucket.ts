@@ -4,6 +4,7 @@ import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { BucketService } from '../../services/bucket-service';
 import { FoodService } from '../../services/food-service';
 import { OrderService } from '../../services/order-service'
+import { AccountService } from '../../services/account-service'
 import { BucketItem } from '../../models/bucketItem.model';
 import { Order } from '../../models/order.model'
 import { FirebaseListObservable } from 'angularfire2';
@@ -22,8 +23,7 @@ import { FoodPage } from '../food/food';
 })
 export class BucketPage {
   bucketList: FirebaseListObservable<Array<BucketItem>>;
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private bucketService: BucketService, private foodService: FoodService, private datePipe: DatePipe, private orderService: OrderService) { }
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private bucketService: BucketService, private foodService: FoodService, private datePipe: DatePipe, private orderService: OrderService, private accountService: AccountService) { }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad BucketPage');
@@ -52,7 +52,7 @@ export class BucketPage {
 
   clickEdit(bucketItem: BucketItem) {
     this.foodService.getFoodItemById(bucketItem.foodId).then((data) => {
-      // console.log(data);
+      // console.log(bucketItem.$key);
       this.navCtrl.push(FoodOrderPage, {
         foodItem: data,
         bucketItem: bucketItem,
@@ -75,32 +75,42 @@ export class BucketPage {
           text: 'OK',
           handler: () => {
             let items: Array<BucketItem> = [];
-            this.bucketList.subscribe((data) => {
-              items = data;
-            }).unsubscribe();
-            let totalAmount: number = 0;
-            items.forEach((item: BucketItem, index: number) => {
-              totalAmount += item.amount;
-              if (index == (items.length - 1)) {
-                let order: Order = {
-                  userId: localStorage.getItem('uid'),
-                  // orderTime: new Date().toString(),
-                  orderTime: this.orderService.getServerTimestamp(),
-                  status: {
-                    state: 'Pending'
-                  },
-                  amount: totalAmount,
-                  items: items
-                };
-                console.log(order);
-                this.orderService.placeOrder(order)
-                .then(() => {
-                  this.bucketService.emptyBucket().then(() => {
-                    this.navCtrl.setRoot({ title: 'Foods', component: FoodPage }.component);
-                  }).catch(() => { })
-                }).catch(() => { });
-              }
-            })
+            this.accountService.getCabinNumber().then((cabinNumber: number) => {
+
+              this.bucketList.subscribe((data) => {
+                items = data;
+              }).unsubscribe();
+
+              let totalAmount: number = 0;
+
+              items.forEach((item: BucketItem, index: number) => {
+                totalAmount += item.amount;
+                if (index == (items.length - 1)) {
+                  let order: Order = {
+                    userId: localStorage.getItem('uid'),
+                    cabin: cabinNumber,
+                    // orderTime: new Date().toString(),
+                    orderTime: this.orderService.getServerTimestamp(),
+                    status: {
+                      state: 'Pending'
+                    },
+                    amount: totalAmount,
+                    items: items
+                  };
+                  console.log(order);
+                  this.orderService.placeOrder(order)
+                    .then(() => {
+                      this.bucketService.emptyBucket().then(() => {
+                        this.navCtrl.setRoot({ title: 'Foods', component: FoodPage }.component);
+                      }).catch(() => { })
+                    }).catch(() => { });
+                }
+              })
+            });
+
+
+
+
           }
         }
       ]

@@ -8,6 +8,7 @@ export interface Order {
     orderTime: Object,
     status: OrderStatus,
     amount: number,
+    cabin: number,   
     items: Array<BucketItem>,
     user?: User
 }

@@ -406,4 +406,16 @@ export class AccountService {
             else res();
         })
     }
+
+    getCabinNumber() {
+        return new Promise((res, rej) => {
+            let clientSubcription = this.angularFire.database.object('/roles/clients/' + localStorage.getItem('uid')).subscribe((clientData: any) => {
+                clientSubcription.unsubscribe();
+                res(clientData.cabin);
+            })
+        })
+
+    }
 }
+
+
