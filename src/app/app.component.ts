@@ -42,8 +42,9 @@ export class MyApp {
       StatusBar.styleDefault();
       Splashscreen.hide();
       StatusBar.backgroundColorByHexString('#bb0000');
-      this.initPushNotification();
+      // this.initPushNotification();
       if (this.accountService.checkUserIsLoggedIn()) {
+        this.initPushNotification();
         this.rootPage = FoodPage;
       }
       else
@@ -92,10 +93,10 @@ export class MyApp {
     const pushObject: PushObject = this.push.init(option);
 
 
-    pushObject.on('registration').subscribe((data: any) => {
-      console.log(data.registrationId);
+    // pushObject.on('registration').subscribe((data: any) => {
+    //   console.log(data.registrationId);
 
-    })
+    // })
 
     pushObject.on('notification').subscribe((data: any) => {
       if (data.additionalData.foreground) {
