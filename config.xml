@@ -39,4 +39,6 @@
     <plugin name="phonegap-plugin-push" spec="~1.10.3">
         <variable name="SENDER_ID" value="490551661425" />
     </plugin>
+    <plugin name="cordova-plugin-background-mode" spec="~0.7.2" />
+    <plugin name="de.appplant.cordova.plugin.local-notification" spec="~0.8.4" />
 </widget>

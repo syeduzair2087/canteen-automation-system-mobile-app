@@ -414,8 +414,21 @@ export class AccountService {
                 res(clientData.cabin);
             })
         })
-
     }
+
+    addNotificationToken(token: string) {
+        return new Promise((res, rej) => {
+            let clientAuth = this.angularFire.auth;
+            clientAuth.subscribe((data: FirebaseAuthState) => {
+                this.angularFire.database.list('notificationTokens/' + data.uid + '/').push(token).then(() => {
+                    clientAuth.unsubscribe();
+                    console.log('Token added sucessfully!');
+                    res('')
+                })
+            })
+        })
+    }
+
 }
 
 
