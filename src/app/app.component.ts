@@ -50,14 +50,6 @@ export class MyApp {
       else
         this.rootPage = HomePage;
     });
-
-    // this.localNotifications.schedule({
-    //   text: 'new local notifications',
-    //   sound: 'file://sound.mp3',
-    //   at: new Date(new Date().getTime() + 6300),
-    //   led: 'FF0000',
-
-    // })
   }
 
   openPage(page) {
@@ -121,12 +113,6 @@ export class MyApp {
           led:  'fff000'
         });
       }
-      // setTimeout(function () {
-      //   console.log("data.message");
-      //   console.log(data.message);
-
-      //   alert(data.message)
-      // }, 1000);
     });
 
     pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));

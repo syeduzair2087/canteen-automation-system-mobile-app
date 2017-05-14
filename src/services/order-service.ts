@@ -60,7 +60,7 @@ export class OrderService {
         })
         loading.present();
         return new Promise((res, rej) => {
-            this.angularFire.database.object('/orders/' + orderKey).update({ status: 'Cancelled' }).then((success) => {
+            this.angularFire.database.object('/orders/' + orderKey + '/status').update({ state: 'Cancelled' }).then((success) => {
                 this.toastCtrl.create({
                     message: 'Order cancelled.',
                     duration: 4500
