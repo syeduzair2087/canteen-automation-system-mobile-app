@@ -17,6 +17,7 @@
 
 
 <ion-content padding>
+  <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
@@ -24,8 +25,9 @@
     Email
   </ion-label>
   <ion-input type="text" #txtEmail></ion-input>-->
+  
   <ion-list>
-    <button ion-item *ngFor="let foodItem of foodList" (click)="clickFoodItem(foodItem)">
+    <button ion-item *ngFor="let foodItem of foodList | filterFoodByName: filterFoodName" (click)="clickFoodItem(foodItem)">
     <!--<ion-avatar item-left>
       <img [attr.src]="this.imgSource" onerror="this.src = './assets/images/no_image.png'">
     </ion-avatar>-->

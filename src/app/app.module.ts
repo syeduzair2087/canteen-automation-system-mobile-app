@@ -21,6 +21,7 @@ import { OrderPrefsPage } from '../pages/order-prefs/order-prefs';
 
 //////////PIPES//////////
 import { ReversePipe } from '../pipes/reverse.pipe';
+import { FilterFoodByNamePipe } from '../pipes/food.pipe';
 
 //////////SERVICES//////////
 import { AccountService } from '../services/account-service';
@@ -61,7 +62,8 @@ export const firebaseAuthConfig = {
     HomePage,
     OrderDetailsPage,
     OrderPrefsPage,
-    ReversePipe
+    ReversePipe,
+    FilterFoodByNamePipe
   ],
   imports: [
     IonicModule.forRoot(MyApp, {

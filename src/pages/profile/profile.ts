@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ActionSheetController, AlertController, App } from 'ionic-angular';
-import { Camera } from 'ionic-native';
+// import { Camera } from 'ionic-native';
+import { Camera } from 'ionic-native'
 import { User } from '../../models/user.model';
 import { AccountService } from '../../services/account-service';
 import { HomePage } from '../../pages/home/home';

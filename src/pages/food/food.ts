@@ -5,6 +5,7 @@ import { FoodItem } from '../../models/food.model';
 import { FoodService } from '../../services/food-service';
 import { FoodOrderPage } from '../food-order/food-order';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
+import { FilterFoodByNamePipe } from '../../pipes/food.pipe';
 
 /*
   Generated class for the Food page.
@@ -18,6 +19,7 @@ import { Push, PushObject, PushOptions } from '@ionic-native/push';
 })
 export class FoodPage {
   foodList: Array<FoodItem>;
+  filterFoodName: string = '';
 
   // options: PushOptions = {
   //   android: {
@@ -76,5 +78,10 @@ export class FoodPage {
       this.foodList = data;
       refresher.complete();
     })
+  }
+
+    getItems(ev: any) {
+    let val = ev.target.value;
+    this.filterFoodName = val;
   }
 }
