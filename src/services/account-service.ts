@@ -21,7 +21,8 @@ export class AccountService {
             this.angularFire.auth.createUser({ email: email, password: password }).then((user: FirebaseAuthState) => {
                 user.auth.updateProfile({
                     displayName: displayName,
-                    photoURL: 'https://firebasestorage.googleapis.com/v0/b/canteenautomationsystem.appspot.com/o/assets%2Fno-image.jpg?alt=media&token=ee3b6fc2-8906-4dac-abea-43f728190f22'
+                    // photoURL: 'https://firebasestorage.googleapis.com/v0/b/canteenautomationsystem.appspot.com/o/assets%2Fno-image.jpg?alt=media&token=ee3b6fc2-8906-4dac-abea-43f728190f22'
+                    photoURL: ''
                 }).then(() => {
                     this.angularFire.database.object('roles/clients/' + user.uid).set({
                         name: displayName,
@@ -38,6 +39,7 @@ export class AccountService {
                     });
                 })
             }).catch((error) => {
+                console.log(error.message)
                 loading.dismiss().then(() => {
                     this.toastCtrl.create({
                         message: 'Failed to register!',

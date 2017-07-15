@@ -36,7 +36,7 @@ export class ProfilePage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ProfilePage');
     this.accountService.getUserData().then((data: User) => {
-      console.log(data);
+      // console.log(data);
       this.user = data;
       // this.userName = data.name;
       // this.userEmail = data.email;
@@ -211,7 +211,7 @@ export class ProfilePage {
     }).present();
   }
 
-  clickPhone() {
+  clickContact() {
     this.alertCtrl.create({
       subTitle: 'Enter new phone Number',
       inputs: [

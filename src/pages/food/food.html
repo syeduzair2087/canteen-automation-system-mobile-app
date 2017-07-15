@@ -13,26 +13,32 @@
     <ion-title>Food</ion-title>
   </ion-navbar>
 
+  <!--<ion-toolbar>
+    <ion-searchbar [(ngModel)]="filterFoodName"></ion-searchbar>
+  </ion-toolbar>-->
+
 </ion-header>
+<!--<ion-nav-view>-->
+<!--<ion-view >-->
 
-
-<ion-content padding>
-  <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
-  <ion-refresher (ionRefresh)="doRefresh($event)">
+<ion-content #content>
+  <ion-searchbar [(ngModel)]="filterFoodName"></ion-searchbar>
+  <ion-content>
+  <!--<ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
+  </ion-refresher>-->
   <!--<ion-label floating>
     Email
   </ion-label>
   <ion-input type="text" #txtEmail></ion-input>-->
-  
-  <ion-list>
+
+  <ion-list inset>
     <button ion-item *ngFor="let foodItem of foodList | filterFoodByName: filterFoodName" (click)="clickFoodItem(foodItem)">
-    <!--<ion-avatar item-left>
-      <img [attr.src]="this.imgSource" onerror="this.src = './assets/images/no_image.png'">
-    </ion-avatar>-->
     <h2>{{foodItem.food_title}}</h2>
     <p>Rs. {{foodItem.food_price}}</p>
   </button>
   </ion-list>
+</ion-content>  
 </ion-content>
+<!--</ion-view>-->
+  <!--</ion-nav-view> -->

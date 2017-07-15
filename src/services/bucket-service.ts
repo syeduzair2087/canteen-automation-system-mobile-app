@@ -8,20 +8,20 @@ export class BucketService {
     constructor(private angularFire: AngularFire, private loadingCtrl: LoadingController, private toastCtrl: ToastController) { }
 
     addItemToBucket(bucketItem: BucketItem) {
-        let loading = this.loadingCtrl.create({
-            content: 'Adding to bucket...'
-        });
-        loading.present();
+        // let loading = this.loadingCtrl.create({
+        //     content: 'Adding to bucket...'
+        // });
+        // loading.present();
         return new Promise((res, rej) => {
             this.angularFire.database.list('/buckets/' + localStorage.getItem('uid')).push(bucketItem).then(() => {
-                loading.dismiss();
+                // loading.dismiss();
                 this.toastCtrl.create({
                     message: 'Item added to bucket.',
                     duration: 4500
                 }).present();
                 res();
             }).catch((error) => {
-                loading.dismiss();
+                // loading.dismiss();
                 this.toastCtrl.create({
                     message: 'Failed to add item to bucket.',
                     duration: 4500
@@ -67,16 +67,16 @@ export class BucketService {
 
     updateBucketItem(bucketItem: BucketItem, itemKey: string) {
         return new Promise((res, rej) => {
-            let loading = this.loadingCtrl.create({
-                content: 'Updating item...'
-            });
-            loading.present();
+        //     let loading = this.loadingCtrl.create({
+        //         content: 'Updating item...'
+        //     });
+            // loading.present();
             this.angularFire.database.object('/buckets/' + localStorage.getItem('uid') + '/' + itemKey).update(bucketItem).then(() => {
                 this.toastCtrl.create({
                     message: 'Item updated successfully',
                     duration: 4500
                 }).present();
-                loading.dismiss();
+                // loading.dismiss();
                 res();
             }).catch((error) => {
                 console.log(error);
@@ -84,7 +84,7 @@ export class BucketService {
                     message: 'Failed to update item. Please try again.',
                     duration: 4500
                 }).present();
-                loading.dismiss();
+                // loading.dismiss();
                 rej();
             })
         })

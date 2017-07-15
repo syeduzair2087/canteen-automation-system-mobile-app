@@ -10,6 +10,8 @@ import { Order } from '../../models/order.model'
 import { FirebaseListObservable } from 'angularfire2';
 import { FoodOrderPage } from '../food-order/food-order';
 import { FoodPage } from '../food/food';
+import { TotalComponent } from '../../component/total.component/total.compoment';
+import { Subscription } from 'rxjs';
 
 /*
   Generated class for the Bucket page.
@@ -22,13 +24,20 @@ import { FoodPage } from '../food/food';
   templateUrl: 'bucket.html'
 })
 export class BucketPage {
-  bucketList: FirebaseListObservable<Array<BucketItem>>;
+  bucketList: Array<BucketItem>;
+  bucketSubscription: Subscription;
+  amount: number = 0;
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private bucketService: BucketService, private foodService: FoodService, private datePipe: DatePipe, private orderService: OrderService, private accountService: AccountService) { }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad BucketPage');
-    this.bucketList = this.bucketService.fetchBucket();
-    console.log(this.orderService.getServerTimestamp());
+    this.bucketSubscription = this.bucketService.fetchBucket().subscribe((data: Array<BucketItem>) => {
+      this.bucketList = data;
+    })
+  }
+
+  ionViewWillLeave() {
+    this.bucketSubscription.unsubscribe();
   }
 
   clickRemove(itemIndex: string) {
@@ -62,7 +71,7 @@ export class BucketPage {
     // this.navCtrl.push(OrderPage);
   }
 
-  clickCheckout() {
+  clickCheckout(event) {
     this.alertCtrl.create({
       title: 'Confirm',
       message: 'Are you sure you want to place the order?',
@@ -77,15 +86,15 @@ export class BucketPage {
             let items: Array<BucketItem> = [];
             this.accountService.getCabinNumber().then((cabinNumber: number) => {
 
-              this.bucketList.subscribe((data) => {
-                items = data;
-              }).unsubscribe();
+              // this.bucketList.subscribe((data) => {
+              //   items = data;
+              // }).unsubscribe();
 
               let totalAmount: number = 0;
 
-              items.forEach((item: BucketItem, index: number) => {
+              this.bucketList.forEach((item: BucketItem, index: number) => {
                 totalAmount += item.amount;
-                if (index == (items.length - 1)) {
+                if (index == (this.bucketList.length - 1)) {
                   let order: Order = {
                     userId: localStorage.getItem('uid'),
                     cabin: cabinNumber,
@@ -95,7 +104,7 @@ export class BucketPage {
                       state: 'Pending'
                     },
                     amount: totalAmount,
-                    items: items
+                    items: this.bucketList
                   };
                   console.log(order);
                   this.orderService.placeOrder(order)
@@ -107,13 +116,29 @@ export class BucketPage {
                 }
               })
             });
-
-
-
-
           }
         }
       ]
     }).present();
+  }
+
+  getTotalAmount() {
+    // let amount: number = 0;
+    // this.amount = 0;
+    let amount = 0;
+    if (this.bucketList && this.bucketList.length) {
+      this.bucketList.forEach((item: BucketItem, index: number) => {
+        amount += item.amount;
+        // if (index == this.bucketList.length - 1) {
+        // }
+      });
+      // console.log('found: ' + amount);
+      return amount;
+    } else {
+      // console.log('not found: ' + amount);
+      return amount;
+    }
+
+    // return 66;
   }
 }

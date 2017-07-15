@@ -8,16 +8,17 @@ export class FoodService {
     constructor(private angularFire: AngularFire, private loadingCtrl: LoadingController) { }
 
     getFoodItems() {
-        let loading = this.loadingCtrl.create({
-            content: 'Fetching menu...'
-        });
-        loading.present();
-        return new Promise ((res, rej) => {
-            this.angularFire.database.list('food').subscribe((data) => {
-                loading.dismiss();
-                res(data);
-            })
-        })
+        // let loading = this.loadingCtrl.create({
+        //     content: 'Fetching menu...'
+        // });
+        // loading.present();
+        // return new Promise ((res, rej) => {
+        //     this.angularFire.database.list('food').subscribe((data) => {
+        //         loading.dismiss();
+        //         res(data);
+        //     })
+        // })
+        return this.angularFire.database.list('food');
     }
 
     getFoodItemById(foodItemKey: string) {

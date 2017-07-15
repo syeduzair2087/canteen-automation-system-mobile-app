@@ -17,7 +17,7 @@
 
 
 <ion-content padding>
-  <img [src]="user.imageURL" class="rounded-circle" width="75%" padding>
+  <!--<img [src]="user.imageURL" class="rounded-circle" width="75%" padding>
   <ion-list no-lines>
     <ion-item>
       <h1 text-center>
@@ -31,5 +31,29 @@
     <button button ion-button block (click)="clickCabin()">Change Cabin Number</button>
     <button button ion-button block (click)="clickPassword()">Change Password</button>
     <button button ion-button block color="danger" (click)="clickDelete()">Delete Account</button>
+  </ion-list>-->
+
+
+  <a (click)="clickImage()">
+    <img [src]=" user.imageURL || 'assets/img/profile.png'" class="rounded-circle" width="75%" padding>
+  </a>
+  <ion-list no-lines>
+    <ion-item (click)="clickName()">
+      <h2>Name</h2>
+      <p>{{user.name}}</p>
+    </ion-item>
+    <ion-item (click)="clickEmail()">
+      <h2>Email</h2>
+      <p>{{user.email}}</p>
+    </ion-item>
+    <ion-item (click)="clickContact()">
+      <h2>Phone</h2>
+      <p>{{user.contact}}</p>
+    </ion-item>
+    <ion-item (click)="clickCabin()">
+      <h2>Cabin no</h2>
+      <p>{{user.cabin}}</p>
+    </ion-item>
+    <button button ion-button block (click)="clickPassword()">Change Password</button>
   </ion-list>
 </ion-content>

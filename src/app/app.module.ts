@@ -33,6 +33,9 @@ import { DatePipe } from '@angular/common';
 //////////MODULES//////////
 import { AngularFireModule, AuthMethods, AuthProviders } from 'angularfire2';
 
+/////////COMPONENT////////
+import { TotalComponent } from '../component/total.component/total.compoment'
+
 export const firebaseConfig = {
   apiKey: "AIzaSyCL9zQkpCE5Hfv15Lb_O6Ih98KFchCG0Ok",
   authDomain: "canteenautomationsystem.firebaseapp.com",
@@ -63,7 +66,8 @@ export const firebaseAuthConfig = {
     OrderDetailsPage,
     OrderPrefsPage,
     ReversePipe,
-    FilterFoodByNamePipe
+    FilterFoodByNamePipe,
+    TotalComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
@@ -87,7 +91,8 @@ export const firebaseAuthConfig = {
     LoginPage,
     HomePage,
     OrderDetailsPage,
-    OrderPrefsPage
+    OrderPrefsPage,
+    TotalComponent
   ],
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler },

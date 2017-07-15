@@ -18,7 +18,7 @@
 
 <ion-content>
   <ion-list>
-    <ion-item-sliding *ngFor="let bucketItem of bucketList | async">
+    <ion-item-sliding *ngFor="let bucketItem of bucketList">
       <button ion-item (click)="clickEdit(bucketItem)">
         <h2>
           {{bucketItem.title}}
@@ -38,14 +38,22 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
-  <ion-fab bottom right *ngIf="(bucketList | async)?.length > 0">
+  <!--<ion-fab bottom right *ngIf="(bucketList)?.length > 0">
     <button ion-fab mini (click)="clickCheckout()">
       <ion-icon name="checkmark"></ion-icon>
       </button>
-  </ion-fab>
-  <div *ngIf="(bucketList | async)?.length == 0" text-center class="center">
+  </ion-fab>-->
+  
+<!--align-title="center"-->
+  <!--<ion-footer  class="bar-assertive" >
+    <h2 class="title" style="padding-left: 10px;"> Total : Rs. <label class="text-right"> 222</label>/-</h2> 
+    <button ion-button full color="secondary" style="height: 45px; font-size: 25px" >  Check out </button>
+  </ion-footer>-->
+  <div *ngIf="(bucketList)?.length == 0" text-center class="center">
     <h2>
       Sorry, you don't have any items in your bucket.
     </h2>
   </div>
+  <total-component *ngIf="(bucketList)?.length > 0" [totalAmount]= "getTotalAmount()" (checkOutEmit)="clickCheckout($event)" ></total-component>
 </ion-content>
+  
