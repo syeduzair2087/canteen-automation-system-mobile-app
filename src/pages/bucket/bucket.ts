@@ -29,7 +29,11 @@ export class BucketPage {
   amount: number = 0;
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private bucketService: BucketService, private foodService: FoodService, private datePipe: DatePipe, private orderService: OrderService, private accountService: AccountService) { }
 
-  ionViewDidLoad() {
+  // ionViewCanEnter() {
+  //   console.log('ionViewCanEnter ');
+  // }
+
+  ionViewDidEnter() {
     console.log('ionViewDidLoad BucketPage');
     this.bucketSubscription = this.bucketService.fetchBucket().subscribe((data: Array<BucketItem>) => {
       this.bucketList = data;
@@ -37,6 +41,7 @@ export class BucketPage {
   }
 
   ionViewWillLeave() {
+    console.log('ionViewWillLeave');
     this.bucketSubscription.unsubscribe();
   }
 
